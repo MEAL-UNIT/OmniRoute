@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Case Story</title>
+<style>
+  :root{
+    --ink:#262626; --paper:#ffffff; --line:#bfbfbf;
+    --accent:#1F3864; --accent-teal:#2E7D6B;
+    --accent-soft:#F2F2F2; --accent-soft2:#EAF1EF; --muted:#595959; --danger:#a5402f;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:#e5e5e5; font-family:"Calibri","Segoe UI",Arial,sans-serif; color:var(--ink);}
+  #sheet p, #sheet li{text-align:justify;}
+  @media print{ *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; color-adjust:exact !important; } }
+  .toolbar{
+    position:sticky; top:0; z-index:50; background:#1a1a1a; color:#f2f1ea;
+    padding:10px 18px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+  }
+  .toolbar .brand{font-weight:700; letter-spacing:.04em; margin-right:auto; font-size:13px; text-transform:uppercase; color:#a9c9e8;}
+  .toolbar .status{font-size:11.5px; color:#a9c9e8; min-width:120px;}
+  .toolbar button{
+    background:transparent; color:#f2f1ea; border:1px solid #565656; padding:7px 12px; border-radius:5px;
+    font-size:12.5px; cursor:pointer; font-family:inherit; transition:background .15s;
+  }
+  .toolbar button:hover{background:#333;}
+  .toolbar button.primary{background:var(--accent); border-color:var(--accent);}
+  .toolbar button.primary:hover{background:#16294a;}
+
+  .page-wrap{width:210mm; margin:26px auto 80px; padding:0 16px; box-sizing:border-box;}
+  #sheet{
+    width:210mm; margin:0 auto; box-sizing:border-box; background:var(--paper); border:1px solid var(--line);
+    padding:14mm 16mm; box-shadow:0 2px 18px rgba(0,0,0,.12);
+  }
+  .masthead{display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:14px;}
+  .masthead .proj{font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); font-family:"Helvetica Neue",Arial,sans-serif;}
+  .masthead .annex-label{font-size:13px; font-weight:700; color:#E8730A; font-family:"Helvetica Neue",Arial,sans-serif;}
+  .title-block{text-align:center; margin-bottom:14px;}
+  .title-block h1{font-family:"Times New Roman",Times,serif; color:var(--accent-teal); font-size:22px; font-weight:700; margin:0 0 2px;}
+  .title-block .org{font-size:14px; color:var(--ink); font-style:italic; font-family:"Times New Roman",Times,serif;}
+
+  .meta-table{width:100%; border-collapse:collapse; margin-bottom:16px; font-size:12.5px;}
+  .meta-table td{border:1px solid var(--line); padding:6px 8px; vertical-align:middle;}
+  .meta-table td.label{background:var(--accent-soft); font-weight:700; width:20%; font-family:"Helvetica Neue",Arial,sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:.02em; color:var(--accent);}
+  .meta-table input[type=text]{width:100%; border:none; background:transparent; font-size:13px; font-family:inherit; color:var(--ink); padding:2px;}
+  .meta-table input[type=text]:focus{outline:none; background:var(--accent-soft2);}
+  .meta-table textarea{width:100%; border:none; background:transparent; font-size:13px; font-family:inherit; color:var(--ink); padding:2px; resize:none; overflow:hidden; line-height:1.35; display:block;}
+  .meta-table textarea:focus{outline:none; background:var(--accent-soft2);}
+
+  .section{margin-top:22px;}
+  .section-label{
+    font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--accent);
+    font-family:"Helvetica Neue",Arial,sans-serif; margin:0 0 8px; display:flex; align-items:center; gap:8px;
+  }
+  .section-label .n{
+    display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%;
+    background:var(--accent); color:#fff; font-size:11px; font-weight:700; flex:none;
+  }
+  .section-hint{font-size:11px; color:var(--muted); font-family:"Helvetica Neue",Arial,sans-serif; margin:0 0 6px;}
+  .guide-box{
+    font-size:11.5px; color:var(--ink); font-family:"Helvetica Neue",Arial,sans-serif;
+    margin:0 0 8px; padding:8px 12px; background:var(--accent-soft); border-left:3px solid var(--accent-teal); line-height:1.6;
+  }
+  .guide-box .gb-label{font-weight:700; color:var(--accent-teal); text-transform:uppercase; font-size:10px; letter-spacing:.04em; display:block; margin-bottom:3px;}
+  .guide-box ul{margin:0; padding-left:18px;}
+  .guide-box li{margin-bottom:2px;}
+  .free-text{
+    width:100%; border:1px solid var(--line); background:transparent; font-family:inherit; font-size:13px;
+    color:var(--ink); padding:8px 10px; resize:none; overflow:hidden; line-height:1.55; min-height:70px; display:block;
+  }
+  .free-text:focus{outline:none; border-color:var(--accent); background:var(--accent-soft2);}
+
+  .target-row{display:flex; gap:18px; margin:6px 0 4px; font-size:12px; font-family:"Helvetica Neue",Arial,sans-serif; flex-wrap:wrap; align-items:center;}
+  .target-row label{font-weight:700; color:var(--accent); text-transform:uppercase; font-size:11px; letter-spacing:.02em; margin-right:4px;}
+  .target-row .tf{display:inline-flex; align-items:center; gap:4px;}
+  .target-row input[type=text]{width:56px; border:none; border-bottom:1px solid var(--line); background:transparent; font-size:13px; padding:3px 2px; text-align:center; font-family:inherit; color:var(--ink);}
+  .target-row input[type=text]:focus{outline:none; border-bottom:1px solid var(--accent);}
+
+  .sign-block{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:26px;}
+  .sign-block .sb{border-top:1px solid var(--line); padding-top:8px;}
+  .sign-block .sb label{display:block; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.02em; color:var(--accent); font-family:"Helvetica Neue",Arial,sans-serif; margin-bottom:16px;}
+  .sign-block .sb input[type=text]{width:100%; border:none; border-bottom:1px solid var(--line); background:transparent; font-size:13px; padding:4px 2px; font-family:inherit; color:var(--ink);}
+  .sign-block .sb input[type=text]:focus{outline:none; border-bottom:1px solid var(--accent);}
+
+  .footer-note{margin-top:24px; text-align:center; font-size:10.5px; color:var(--muted); font-style:italic;}
+
+  @media print{
+    body{background:#fff;}
+    .toolbar{display:none;}
+    .page-wrap{margin:0; padding:0; max-width:none; width:auto;}
+    #sheet{box-shadow:none; border:none; padding:0.5in; width:auto;}
+    .section{break-inside:avoid;}
+  }
+  @page{
+    size: A4; margin: 0.6in 0.55in 0.5in;
+    @bottom-center{ content: "Page " counter(page) " of " counter(pages); font-family:"Helvetica Neue",Arial,sans-serif; font-size:9pt; color:#595959; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="brand">FIVDB · Case Story</span>
+  <span class="status" id="statusMsg"></span>
+  <button onclick="window.print()">🖨️ Print</button>
+  <button class="primary" onclick="saveAsHTML()">💾 Save</button>
+  <button onclick="clearAll()">✕ Clear form</button>
+</div>
+
+<div class="page-wrap">
+<div id="sheet">
+
+  <div class="masthead">
+    <div class="annex-label">Reporting Channel &amp; Evidence Generation</div>
+    <div class="proj">SURAKKHA PROJECT</div>
+  </div>
+
+  <div class="title-block">
+    <h1>CASE STORY</h1>
+    <div class="org">Friends In Village Development Bangladesh (FIVDB)</div>
+  </div>
+
+  <table class="meta-table">
+    <tr>
+      <td class="label">Project / Action</td>
+      <td colspan="3"><input type="text" data-field="projectAction" value="SURAKKHA - DG ECHO 2026/00158/RQ/01/03"></td>
+    </tr>
+    <tr>
+      <td class="label">Story title</td>
+      <td><textarea data-field="storyTitle" rows="1" placeholder="Give this story a short title" oninput="autoGrow(this)"></textarea></td>
+      <td class="label">Activity code</td>
+      <td><input type="text" data-field="activityCode" placeholder="R1Ax / R2Ax"></td>
+    </tr>
+    <tr>
+      <td class="label">Date</td>
+      <td><input type="date" data-field="storyDate"></td>
+      <td class="label">Location / camp</td>
+      <td><input type="text" data-field="venue" placeholder="Enter the location or camp"></td>
+    </tr>
+  </table>
+
+  <div class="section">
+    <div class="section-label"><span class="n">1</span>Background of the person / community</div>
+    <p class="section-hint">Who is this story about? A short introduction — name (if consented), age, situation.</p>
+    <div class="guide-box">
+      <span class="gb-label">Guiding questions</span>
+      <ul>
+        <li>Who is this person or community? (name if consented, age, role)</li>
+        <li>What was their situation or challenge before?</li>
+        <li>What is their connection to the SURAKKHA project?</li>
+      </ul>
+    </div>
+    <textarea class="free-text" rows="3" data-field="background" placeholder="Describe who this story is about and their situation before..." oninput="autoGrow(this)"></textarea>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="n">2</span>The Story</div>
+    <p class="section-hint">Tell the story in the person's own words where possible.</p>
+    <div class="guide-box">
+      <span class="gb-label">Guiding questions</span>
+      <ul>
+        <li>What happened, in order? What did they do or experience?</li>
+        <li>What support did FIVDB / SURAKKHA provide?</li>
+        <li>Was there a turning point, or a moment that stands out?</li>
+        <li>What did the person say, in their own words?</li>
+      </ul>
+    </div>
+    <textarea class="free-text" rows="8" data-field="story" placeholder="Write the story here..." oninput="autoGrow(this)"></textarea>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="n">3</span>Key message / Change observed</div>
+    <p class="section-hint">What does this story show or illustrate about the project's work?</p>
+    <textarea class="free-text" rows="3" data-field="keyMessage" placeholder="Summarize the key message or change..." oninput="autoGrow(this)"></textarea>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="n">4</span>Photo &amp; consent</div>
+    <p class="section-hint">A signed <strong>Consent Form (Annexure A3)</strong> must be attached before this story is used or shared.</p>
+    <label style="display:flex; align-items:center; gap:8px; font-size:13px; font-family:inherit;">
+      <input type="checkbox" data-field="consentAttached" style="width:16px; height:16px;">
+      Signed consent form is attached
+    </label>
+  </div>
+
+  <div class="sign-block">
+    <div class="sb">
+      <label>Prepared by</label>
+      <input type="text" data-field="preparedBy" placeholder="Name &amp; designation">
+    </div>
+    <div class="sb">
+      <label>Approved by</label>
+      <input type="text" data-field="approvedBy" placeholder="Name &amp; designation">
+    </div>
+  </div>
+
+  <div class="footer-note">SURAKKHA PROJECT — Case Story</div>
+
+</div>
+</div>
+
+<script>
+function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function autoGrow(el){ el.style.height='auto'; el.style.height=(el.scrollHeight)+'px'; }
+
+function collectData(){
+  const data = {};
+  document.querySelectorAll('#sheet [data-field]').forEach(el => {
+    data[el.dataset.field] = (el.type === 'checkbox') ? el.checked : el.value;
+  });
+  return data;
+}
+
+function populateData(data){
+  data = data || {};
+  document.querySelectorAll('#sheet [data-field]').forEach(el=>{
+    if(el.type === 'checkbox'){
+      el.checked = !!data[el.dataset.field];
+    } else {
+      el.value = (data[el.dataset.field] !== undefined) ? data[el.dataset.field] : (el.dataset.field==='projectAction' ? 'SURAKKHA - DG ECHO 2026/00158/RQ/01/03' : '');
+    }
+  });
+  document.querySelectorAll('#sheet textarea[data-field]').forEach(autoGrow);
+}
+
+function setStatus(msg){
+  const s = document.getElementById('statusMsg');
+  s.textContent = msg;
+  setTimeout(()=>{ if(s.textContent===msg) s.textContent=''; }, 3500);
+}
+
+function clearAll(){
+  if(!confirm('Clear the whole case story? This cannot be undone.')) return;
+  populateData({});
+  setStatus('Form cleared');
+}
+
+function saveAsHTML(){
+  const data = collectData();
+  const clone = document.documentElement.cloneNode(true);
+  const old = clone.querySelector('#embedded-data');
+  if(old) old.remove();
+  const script = clone.ownerDocument.createElement('script');
+  script.id = 'embedded-data';
+  script.type = 'application/json';
+  script.textContent = JSON.stringify(data);
+  clone.querySelector('head').appendChild(script);
+  const html = '<!DOCTYPE html>\n' + clone.outerHTML;
+  const blob = new Blob([html], { type: 'text/html' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  const stamp = new Date().toISOString().slice(0,10);
+  link.download = `FIVDB_Case_Story_${stamp}.html`;
+  link.click();
+  setStatus('✓ Downloaded');
+}
+
+(function(){
+  const embedded = document.getElementById('embedded-data');
+  if(embedded){
+    try{ populateData(JSON.parse(embedded.textContent)); return; }catch(e){ /* fall through */ }
+  }
+  populateData({});
+})();
+</script>
+
+</body>
+</html>

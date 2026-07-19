@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Consent Form</title>
+<style>
+  :root{
+    --ink:#262626; --paper:#ffffff; --line:#bfbfbf;
+    --accent:#1F3864; --accent-teal:#2E7D6B;
+    --accent-soft:#F2F2F2; --accent-soft2:#EAF1EF; --muted:#595959; --danger:#a5402f;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:#e5e5e5; font-family:"Calibri","Segoe UI",Arial,sans-serif; color:var(--ink);}
+  #sheet p, #sheet li{text-align:justify;}
+  @media print{ *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; color-adjust:exact !important; } }
+  .toolbar{
+    position:sticky; top:0; z-index:50; background:#1a1a1a; color:#f2f1ea;
+    padding:10px 18px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+  }
+  .toolbar .brand{font-weight:700; letter-spacing:.04em; margin-right:auto; font-size:13px; text-transform:uppercase; color:#a9c9e8;}
+  .toolbar .status{font-size:11.5px; color:#a9c9e8; min-width:120px;}
+  .toolbar button{
+    background:transparent; color:#f2f1ea; border:1px solid #565656; padding:7px 12px; border-radius:5px;
+    font-size:12.5px; cursor:pointer; font-family:inherit; transition:background .15s;
+  }
+  .toolbar button:hover{background:#333;}
+  .toolbar button.primary{background:var(--accent); border-color:var(--accent);}
+  .toolbar button.primary:hover{background:#16294a;}
+
+  .page-wrap{width:210mm; margin:26px auto 80px; padding:0 16px; box-sizing:border-box;}
+  #sheet{
+    width:210mm; margin:0 auto; box-sizing:border-box; background:var(--paper); border:1px solid var(--line);
+    padding:14mm 16mm; box-shadow:0 2px 18px rgba(0,0,0,.12);
+  }
+  .masthead{display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:14px;}
+  .masthead .proj{font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); font-family:"Helvetica Neue",Arial,sans-serif;}
+  .masthead .annex-label{font-size:13px; font-weight:700; color:#E8730A; font-family:"Helvetica Neue",Arial,sans-serif;}
+  .title-block{text-align:center; margin-bottom:14px;}
+  .title-block h1{font-family:"Times New Roman",Times,serif; color:var(--accent-teal); font-size:19px; font-weight:700; margin:0 0 2px; line-height:1.3;}
+  .title-block .org{font-size:13px; color:var(--ink); font-style:italic; font-family:"Times New Roman",Times,serif;}
+
+  .guide-label{font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:var(--accent); font-family:"Helvetica Neue",Arial,sans-serif; margin:0 0 6px;}
+  table.guide{width:100%; border-collapse:collapse; margin-bottom:16px; font-size:12px;}
+  table.guide th{background:var(--accent); color:#fff; font-weight:700; font-size:11px; text-align:left; padding:6px 8px; font-family:"Helvetica Neue",Arial,sans-serif;}
+  table.guide td{border:1px solid var(--line); padding:6px 8px; vertical-align:top;}
+  table.guide td:first-child{font-weight:700; color:var(--accent); width:22%;}
+
+  .form-table{width:100%; border-collapse:collapse; margin-bottom:14px; font-size:12.5px;}
+  .form-table td{border:1px solid var(--line); padding:6px 8px; vertical-align:middle;}
+  .form-table td.label{background:var(--accent-soft); font-weight:700; width:22%; font-family:"Helvetica Neue",Arial,sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:.02em; color:var(--accent);}
+  .form-table input[type=text], .form-table input[type=date]{width:100%; border:none; background:transparent; font-size:13px; font-family:inherit; color:var(--ink); padding:2px;}
+  .form-table input:focus{outline:none; background:var(--accent-soft2);}
+  .form-table textarea{width:100%; border:none; background:transparent; font-size:13px; font-family:inherit; color:var(--ink); padding:2px; resize:none; overflow:hidden; line-height:1.4; display:block; min-height:20px;}
+  .form-table textarea:focus{outline:none; background:var(--accent-soft2);}
+
+  .agree-label{font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:var(--accent); font-family:"Helvetica Neue",Arial,sans-serif; margin:16px 0 8px;}
+  .agree-grid{display:grid; grid-template-columns:1fr 1fr; gap:6px 18px; margin-bottom:16px;}
+  .agree-grid label{display:flex; align-items:flex-start; gap:8px; font-size:12.5px; line-height:1.4;}
+  .agree-grid input[type=checkbox]{width:16px; height:16px; margin-top:1px; flex:none;}
+
+  .legal-note{font-size:11.5px; color:var(--ink); line-height:1.6; margin:0 0 14px;}
+  .legal-note + .legal-note{margin-top:-6px;}
+
+  .footer-note{margin-top:20px; text-align:center; font-size:10.5px; color:var(--muted); font-style:italic;}
+  .confidential{text-align:center; font-size:10px; color:var(--danger); font-weight:700; text-transform:uppercase; letter-spacing:.06em; margin-top:6px;}
+
+  @media print{
+    body{background:#fff;}
+    .toolbar{display:none;}
+    .page-wrap{margin:0; padding:0; max-width:none; width:auto;}
+    #sheet{box-shadow:none; border:none; padding:0.5in; width:auto;}
+    .form-table tr, table.guide tr{break-inside:avoid;}
+  }
+  @page{
+    size: A4; margin: 0.6in 0.55in 0.5in;
+    @bottom-center{ content: "Page " counter(page) " of " counter(pages); font-family:"Helvetica Neue",Arial,sans-serif; font-size:9pt; color:#595959; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="brand">FIVDB · Consent Form</span>
+  <span class="status" id="statusMsg"></span>
+  <button onclick="window.print()">🖨️ Print</button>
+  <button class="primary" onclick="saveAsHTML()">💾 Save</button>
+  <button onclick="clearAll()">✕ Clear form</button>
+</div>
+
+<div class="page-wrap">
+<div id="sheet">
+
+  <div class="masthead">
+    <div class="annex-label">Annexure A3</div>
+    <div class="proj">SURAKKHA PROJECT · SAFEGUARDING</div>
+  </div>
+
+  <div class="title-block">
+    <h1>CONSENT FORM FOR USING PICTURES, IMAGES OR STORIES</h1>
+    <div class="org">Friends In Village Development Bangladesh (FIVDB)</div>
+  </div>
+
+  <div class="guide-label">Guidelines on obtaining consent</div>
+  <table class="guide">
+    <tr><th>Age of person</th><th>Consent of Parent / Legal Guardian / Caregiver</th></tr>
+    <tr><td>Child age 0–16</td><td>Consent of parents/guardians needed. Observe for children's willingness to participate.</td></tr>
+    <tr><td>Child age 16–18</td><td>Both child and parents/guardians can consent.</td></tr>
+    <tr><td>Adult</td><td>Adults can consent on their own. However, in some cases, assisted decision making may be needed.</td></tr>
+  </table>
+
+  <table class="form-table">
+    <tr><td class="label">Name</td><td colspan="3"><input type="text" data-field="p_name"></td></tr>
+    <tr><td class="label">Age</td><td><input type="text" data-field="p_age"></td><td class="label">Date</td><td><input type="date" data-field="p_date"></td></tr>
+    <tr><td class="label">Address</td><td colspan="3"><textarea rows="1" data-field="p_address" oninput="autoGrow(this)"></textarea></td></tr>
+  </table>
+
+  <div class="agree-label">I agree to FIVDB representative:</div>
+  <div class="agree-grid">
+    <label><input type="checkbox" data-field="agree_speak"> Speaking to me and recording my words</label>
+    <label><input type="checkbox" data-field="agree_video"> Making a video of me</label>
+    <label><input type="checkbox" data-field="agree_photo"> Taking photographs of me</label>
+    <label><input type="checkbox" data-field="agree_name"> Mention my name</label>
+    <label><input type="checkbox" data-field="agree_usephotovideo"> Use photographs/videos of me</label>
+    <label><input type="checkbox" data-field="agree_stories"> Use information about myself, family and community to form stories</label>
+    <label style="grid-column:1/-1;"><input type="checkbox" data-field="agree_medical"> Use information about my potential diseases/medical treatment, my impairment or disability</label>
+  </div>
+
+  <p class="legal-note">
+    I understand that the information, photos and/or videos as mentioned above will be used on a voluntary basis (no payment will be received) for the purpose of fundraising, awareness raising, advocacy and other communications with our sponsors, media or the public. They will be used in printed products, electronically as well as online (FIVDB website, social media, e-mail etc.) or for broadcast.
+  </p>
+  <p class="legal-note">
+    I understand that I can revoke my consent at any time with future effect. After revocation, the information will be deleted from the database, but might continue to be accessible if the data has been used by other parties.
+  </p>
+
+  <table class="form-table">
+    <tr><td class="label">Name of person giving consent</td><td colspan="3"><input type="text" data-field="giver_name"></td></tr>
+    <tr><td class="label">Relationship with the child</td><td colspan="3"><input type="text" data-field="giver_relationship"></td></tr>
+    <tr><td class="label">Address</td><td colspan="3"><textarea rows="1" data-field="giver_address" oninput="autoGrow(this)"></textarea></td></tr>
+    <tr><td class="label">Signature / thumbprint</td><td><input type="text" data-field="giver_signature"></td><td class="label">Date</td><td><input type="date" data-field="giver_date"></td></tr>
+  </table>
+
+  <table class="form-table">
+    <tr><td class="label">Name of person collecting consent</td><td colspan="3"><input type="text" data-field="collector_name"></td></tr>
+    <tr><td class="label">Designation</td><td><input type="text" data-field="collector_designation"></td><td class="label">Date</td><td><input type="date" data-field="collector_date"></td></tr>
+    <tr><td class="label">Signature</td><td colspan="3"><input type="text" data-field="collector_signature"></td></tr>
+  </table>
+
+  <div class="confidential">Strictly confidential</div>
+  <div class="footer-note">SURAKKHA PROJECT — Consent Form for Using Pictures, Images or Stories (Annexure A3)</div>
+
+</div>
+</div>
+
+<script>
+function autoGrow(el){ el.style.height='auto'; el.style.height=(el.scrollHeight)+'px'; }
+
+function collectData(){
+  const data = {};
+  document.querySelectorAll('#sheet [data-field]').forEach(el=>{
+    data[el.dataset.field] = (el.type === 'checkbox') ? el.checked : el.value;
+  });
+  return data;
+}
+
+function populateData(data){
+  data = data || {};
+  document.querySelectorAll('#sheet [data-field]').forEach(el=>{
+    if(el.type === 'checkbox'){
+      el.checked = !!data[el.dataset.field];
+    } else {
+      el.value = data[el.dataset.field] !== undefined ? data[el.dataset.field] : '';
+    }
+  });
+  document.querySelectorAll('#sheet textarea[data-field]').forEach(autoGrow);
+}
+
+function setStatus(msg){
+  const s = document.getElementById('statusMsg');
+  s.textContent = msg;
+  setTimeout(()=>{ if(s.textContent===msg) s.textContent=''; }, 3500);
+}
+
+function clearAll(){
+  if(!confirm('Clear the whole consent form? This cannot be undone.')) return;
+  populateData({});
+  setStatus('Form cleared');
+}
+
+function saveAsHTML(){
+  const data = collectData();
+  const clone = document.documentElement.cloneNode(true);
+  const old = clone.querySelector('#embedded-data');
+  if(old) old.remove();
+  const script = clone.ownerDocument.createElement('script');
+  script.id = 'embedded-data';
+  script.type = 'application/json';
+  script.textContent = JSON.stringify(data);
+  clone.querySelector('head').appendChild(script);
+  const html = '<!DOCTYPE html>\n' + clone.outerHTML;
+  const blob = new Blob([html], { type: 'text/html' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  const stamp = new Date().toISOString().slice(0,10);
+  link.download = `FIVDB_Consent_Form_${stamp}.html`;
+  link.click();
+  setStatus('✓ Downloaded');
+}
+
+(function(){
+  const embedded = document.getElementById('embedded-data');
+  if(embedded){
+    try{ populateData(JSON.parse(embedded.textContent)); return; }catch(e){ /* fall through */ }
+  }
+  populateData({});
+})();
+</script>
+
+</body>
+</html>

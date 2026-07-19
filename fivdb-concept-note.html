@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Concept Note</title>
+<style>
+  :root{
+    --ink:#262626; --paper:#ffffff; --line:#bfbfbf;
+    --accent:#1F3864; --accent-teal:#2E7D6B;
+    --accent-soft:#F2F2F2; --accent-soft2:#EAF1EF; --muted:#595959; --danger:#a5402f;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:#e5e5e5; font-family:"Calibri","Segoe UI",Arial,sans-serif; color:var(--ink);}
+  #sheet p, #sheet li{text-align:justify;}
+  @media print{ *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; color-adjust:exact !important; } }
+  .toolbar{
+    position:sticky; top:0; z-index:50; background:#1a1a1a; color:#f2f1ea;
+    padding:10px 18px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+  }
+  .toolbar .brand{font-weight:700; letter-spacing:.04em; margin-right:auto; font-size:13px; text-transform:uppercase; color:#a9c9e8;}
+  .toolbar .status{font-size:11.5px; color:#a9c9e8; min-width:120px;}
+  .toolbar button{
+    background:transparent; color:#f2f1ea; border:1px solid #565656; padding:7px 12px; border-radius:5px;
+    font-size:12.5px; cursor:pointer; font-family:inherit; transition:background .15s;
+  }
+  .toolbar button:hover{background:#333;}
+  .toolbar button.primary{background:var(--accent); border-color:var(--accent);}
+  .toolbar button.primary:hover{background:#16294a;}
+
+  .page-wrap{width:210mm; margin:26px auto 80px; padding:0 16px; box-sizing:border-box;}
+  #sheet{
+    width:210mm; margin:0 auto; box-sizing:border-box; background:var(--paper); border:1px solid var(--line);
+    padding:14mm 16mm; box-shadow:0 2px 18px rgba(0,0,0,.12);
+  }
+  .masthead{display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:14px;}
+  .masthead .proj{font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); font-family:"Helvetica Neue",Arial,sans-serif;}
+  .masthead .annex-label{font-size:13px; font-weight:700; color:#E8730A; font-family:"Helvetica Neue",Arial,sans-serif;}
+  .title-block{text-align:center; margin-bottom:14px;}
+  .title-block h1{font-family:"Times New Roman",Times,serif; color:var(--accent-teal); font-size:22px; font-weight:700; margin:0 0 2px;}
+  .title-block .org{font-size:14px; color:var(--ink); font-style:italic; font-family:"Times New Roman",Times,serif;}
+
+  .meta-table{width:100%; border-collapse:collapse; margin-bottom:16px; font-size:12.5px;}
+  .meta-table td{border:1px solid var(--line); padding:6px 8px; vertical-align:middle;}
+  .meta-table td.label{background:var(--accent-soft); font-weight:700; width:20%; font-family:"Helvetica Neue",Arial,sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:.02em; color:var(--accent);}
+  .meta-table input[type=text]{width:100%; border:none; background:transparent; font-size:13px; font-family:inherit; color:var(--ink); padding:2px;}
+  .meta-table input[type=text]:focus{outline:none; background:var(--accent-soft2);}
+  .meta-table textarea{width:100%; border:none; background:transparent; font-size:13px; font-family:inherit; color:var(--ink); padding:2px; resize:none; overflow:hidden; line-height:1.35; display:block;}
+  .meta-table textarea:focus{outline:none; background:var(--accent-soft2);}
+
+  .section{margin-top:22px;}
+  .section-label{
+    font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--accent);
+    font-family:"Helvetica Neue",Arial,sans-serif; margin:0 0 8px; display:flex; align-items:center; gap:8px;
+  }
+  .section-label .n{
+    display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%;
+    background:var(--accent); color:#fff; font-size:11px; font-weight:700; flex:none;
+  }
+  .section-hint{font-size:11px; color:var(--muted); font-family:"Helvetica Neue",Arial,sans-serif; margin:0 0 6px;}
+  .free-text{
+    width:100%; border:1px solid var(--line); background:transparent; font-family:inherit; font-size:13px;
+    color:var(--ink); padding:8px 10px; resize:none; overflow:hidden; line-height:1.55; min-height:70px; display:block;
+  }
+  .free-text:focus{outline:none; border-color:var(--accent); background:var(--accent-soft2);}
+
+  .target-row{display:flex; gap:18px; margin:6px 0 4px; font-size:12px; font-family:"Helvetica Neue",Arial,sans-serif; flex-wrap:wrap; align-items:center;}
+  .target-row label{font-weight:700; color:var(--accent); text-transform:uppercase; font-size:11px; letter-spacing:.02em; margin-right:4px;}
+  .target-row .tf{display:inline-flex; align-items:center; gap:4px;}
+  .target-row input[type=text]{width:56px; border:none; border-bottom:1px solid var(--line); background:transparent; font-size:13px; padding:3px 2px; text-align:center; font-family:inherit; color:var(--ink);}
+  .target-row input[type=text]:focus{outline:none; border-bottom:1px solid var(--accent);}
+
+  .sign-block{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:26px;}
+  .sign-block .sb{border-top:1px solid var(--line); padding-top:8px;}
+  .sign-block .sb label{display:block; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.02em; color:var(--accent); font-family:"Helvetica Neue",Arial,sans-serif; margin-bottom:16px;}
+  .sign-block .sb input[type=text]{width:100%; border:none; border-bottom:1px solid var(--line); background:transparent; font-size:13px; padding:4px 2px; font-family:inherit; color:var(--ink);}
+  .sign-block .sb input[type=text]:focus{outline:none; border-bottom:1px solid var(--accent);}
+
+  .footer-note{margin-top:24px; text-align:center; font-size:10.5px; color:var(--muted); font-style:italic;}
+
+  @media print{
+    body{background:#fff;}
+    .toolbar{display:none;}
+    .page-wrap{margin:0; padding:0; max-width:none; width:auto;}
+    #sheet{box-shadow:none; border:none; padding:0.5in; width:auto;}
+    .section{break-inside:avoid;}
+  }
+  @page{
+    size: A4; margin: 0.6in 0.55in 0.5in;
+    @bottom-center{ content: "Page " counter(page) " of " counter(pages); font-family:"Helvetica Neue",Arial,sans-serif; font-size:9pt; color:#595959; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="brand">FIVDB · Concept Note</span>
+  <span class="status" id="statusMsg"></span>
+  <button onclick="window.print()">🖨️ Print</button>
+  <button class="primary" onclick="saveAsHTML()">💾 Save</button>
+  <button onclick="clearAll()">✕ Clear form</button>
+</div>
+
+<div class="page-wrap">
+<div id="sheet">
+
+  <div class="masthead">
+    <div class="annex-label">Annexes (1): Concept Note</div>
+    <div class="proj">SURAKKHA PROJECT</div>
+  </div>
+
+  <div class="title-block">
+    <h1>CONCEPT NOTE</h1>
+    <div class="org">Friends In Village Development Bangladesh (FIVDB)</div>
+  </div>
+
+  <table class="meta-table">
+    <tr>
+      <td class="label">Project / Action</td>
+      <td colspan="3"><input type="text" data-field="projectAction" value="SURAKKHA - DG ECHO 2026/00158/RQ/01/03"></td>
+    </tr>
+    <tr>
+      <td class="label">Activity title</td>
+      <td><textarea data-field="activityTitle" rows="1" placeholder="Enter the activity title" oninput="autoGrow(this)"></textarea></td>
+      <td class="label">Activity code</td>
+      <td><input type="text" data-field="activityCode" placeholder="R1Ax / R2Ax"></td>
+    </tr>
+    <tr>
+      <td class="label">Proposed date(s)</td>
+      <td><input type="text" data-field="proposedDates" placeholder="e.g. 12–14 August 2026"></td>
+      <td class="label">Venue / camp</td>
+      <td><input type="text" data-field="venue" placeholder="Enter the venue or camp"></td>
+    </tr>
+  </table>
+
+  <div class="section">
+    <div class="section-label"><span class="n">1</span>Background &amp; Rationale</div>
+    <p class="section-hint">Why is this activity needed? What situation or gap does it respond to?</p>
+    <textarea class="free-text" rows="3" data-field="background" placeholder="Describe the background and rationale for this activity..." oninput="autoGrow(this)"></textarea>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="n">2</span>Objectives</div>
+    <p class="section-hint">What is this activity meant to achieve?</p>
+    <textarea class="free-text" rows="3" data-field="objectives" placeholder="List the objective(s) of this activity..." oninput="autoGrow(this)"></textarea>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="n">3</span>Target Participants</div>
+    <p class="section-hint">Who is this activity for, and how many are expected?</p>
+    <textarea class="free-text" rows="2" data-field="targetDescription" placeholder="Describe the target group (e.g. adolescent girls, camp residents, teaching volunteers)..." oninput="autoGrow(this)"></textarea>
+    <div class="target-row">
+      <span><label>Expected participants</label>(by sex)</span>
+      <span class="tf">Male: <input type="text" data-field="target_male"></span>
+      <span class="tf">Female: <input type="text" data-field="target_female"></span>
+      <span class="tf">With disability: <input type="text" data-field="target_disability"></span>
+      <span class="tf">Total: <input type="text" data-field="target_total"></span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="n">4</span>Methodology / Approach</div>
+    <p class="section-hint">How will this activity be delivered? What methods, sessions, or steps are planned?</p>
+    <textarea class="free-text" rows="4" data-field="methodology" placeholder="Describe the approach and methodology..." oninput="autoGrow(this)"></textarea>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="n">5</span>Expected Outcomes</div>
+    <p class="section-hint">What change or result is expected from this activity?</p>
+    <textarea class="free-text" rows="3" data-field="outcomes" placeholder="Describe the expected outcomes..." oninput="autoGrow(this)"></textarea>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="n">6</span>Budget Summary <span style="font-weight:400; text-transform:none; color:var(--muted); font-size:11px;">(optional)</span></div>
+    <p class="section-hint">A brief note on estimated cost or budget line reference, if applicable.</p>
+    <textarea class="free-text" rows="2" data-field="budgetSummary" placeholder="e.g. Estimated cost: BDT 25,000 — under budget line R1A2..." oninput="autoGrow(this)"></textarea>
+  </div>
+
+  <div class="sign-block">
+    <div class="sb">
+      <label>Prepared by</label>
+      <input type="text" data-field="preparedBy" placeholder="Name &amp; designation">
+    </div>
+    <div class="sb">
+      <label>Approved by</label>
+      <input type="text" data-field="approvedBy" placeholder="Name &amp; designation">
+    </div>
+  </div>
+
+  <div class="footer-note">SURAKKHA PROJECT — Concept Note</div>
+
+</div>
+</div>
+
+<script>
+function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function autoGrow(el){ el.style.height='auto'; el.style.height=(el.scrollHeight)+'px'; }
+
+function collectData(){
+  const data = {};
+  document.querySelectorAll('#sheet [data-field]').forEach(el => data[el.dataset.field] = el.value);
+  return data;
+}
+
+function populateData(data){
+  data = data || {};
+  document.querySelectorAll('#sheet [data-field]').forEach(el=>{
+    el.value = (data[el.dataset.field] !== undefined) ? data[el.dataset.field] : (el.dataset.field==='projectAction' ? 'SURAKKHA - DG ECHO 2026/00158/RQ/01/03' : '');
+  });
+  document.querySelectorAll('#sheet textarea[data-field]').forEach(autoGrow);
+}
+
+function setStatus(msg){
+  const s = document.getElementById('statusMsg');
+  s.textContent = msg;
+  setTimeout(()=>{ if(s.textContent===msg) s.textContent=''; }, 3500);
+}
+
+function clearAll(){
+  if(!confirm('Clear the whole concept note? This cannot be undone.')) return;
+  populateData({});
+  setStatus('Form cleared');
+}
+
+function saveAsHTML(){
+  const data = collectData();
+  const clone = document.documentElement.cloneNode(true);
+  const old = clone.querySelector('#embedded-data');
+  if(old) old.remove();
+  const script = clone.ownerDocument.createElement('script');
+  script.id = 'embedded-data';
+  script.type = 'application/json';
+  script.textContent = JSON.stringify(data);
+  clone.querySelector('head').appendChild(script);
+  const html = '<!DOCTYPE html>\n' + clone.outerHTML;
+  const blob = new Blob([html], { type: 'text/html' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  const stamp = new Date().toISOString().slice(0,10);
+  link.download = `FIVDB_Concept_Note_${stamp}.html`;
+  link.click();
+  setStatus('✓ Downloaded');
+}
+
+(function(){
+  const embedded = document.getElementById('embedded-data');
+  if(embedded){
+    try{ populateData(JSON.parse(embedded.textContent)); return; }catch(e){ /* fall through */ }
+  }
+  populateData({});
+})();
+</script>
+
+</body>
+</html>
